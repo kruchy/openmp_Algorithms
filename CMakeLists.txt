@@ -8,5 +8,5 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fopenmp")
 
 set(SOURCE_FILES main.cpp
         PiCalculator.h
-        PiCalculator.cpp TimedPiCalculator.cpp TimedPiCalculator.h)
+        PiCalculator.cpp Sort.cpp Sort.h)
 add_executable(openmp ${SOURCE_FILES})

@@ -3,6 +3,7 @@
 //
 
 #include "PiCalculator.h"
+
 using namespace std;
 
 double PiCalculator::f1(double x) {
@@ -14,6 +15,7 @@ double PiCalculator::f(double x) {
 }
 
 void PiCalculator::monteCarlo() {
+    cout << endl << "MonteCarlo method" << endl;
     long CIRCLE_POINTS = 0;
     srand((unsigned int) time(NULL));
     cout << "Count points " << endl;
@@ -31,6 +33,7 @@ void PiCalculator::monteCarlo() {
 }
 
 void PiCalculator::monteCarloParallel() {
+    cout << endl << "Monte Carlo parallel method" << endl;
     long CIRCLE_POINTS = 0;
     srand((unsigned int) time(NULL));
     cout << "Count points " << endl;
@@ -47,7 +50,7 @@ void PiCalculator::monteCarloParallel() {
 
 
         double s = 0;
-        for (long i = n; i < POINTS; i+=k) {
+        for (long i = n; i < POINTS; i += k) {
 
             double x = ((double) rand() / (RAND_MAX + 1));
             double y = ((double) rand() / (RAND_MAX + 1));
@@ -66,6 +69,7 @@ void PiCalculator::monteCarloParallel() {
 }
 
 void PiCalculator::multiThread() {
+    cout << endl << "Pi counting multi threaded" << endl;
     double s = 0;
 #pragma omp parallel
     {
@@ -89,7 +93,7 @@ void PiCalculator::multiThread() {
 }
 
 void PiCalculator::oneThread() {
-    cout << "start one thread" << endl;
+    cout << endl << "Pi counting one thread " << endl;
     double suma1 = 0;
     for (int x1 = 0; x1 < l; x1 += 1) {
         suma1 += f(x1 * dx) * dx;
