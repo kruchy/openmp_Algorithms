@@ -2,82 +2,74 @@
 // Created by Krzysiek on 2016-12-17.
 //
 
+#include <omp.h>
 #include "Sort.h"
 
 Sort::Sort() {}
+
 using namespace std;
 
-vector<int> Sort::merge(const vector<int>& left, const vector<int>& right)
-{
+
+vector<int> Sort::merge(vector<int> &left, vector<int> &right) {
     vector<int> result;
-    unsigned left_it = 0, right_it = 0;
+    vector<int>::iterator leftIterator = left.begin();
+    vector<int>::iterator rightIterator = right.begin();
 
-    while(left_it < left.size() && right_it < right.size())
-    {
-        if(left[left_it] < right[right_it])
-        {
-            result.push_back(left[left_it]);
-            left_it++;
-        }
-        else
-        {
-            result.push_back(right[right_it]);
-            right_it++;
+    while (leftIterator != left.end() && rightIterator != right.end()) {
+        if (*leftIterator < *rightIterator) {
+            result.push_back(*leftIterator);
+            leftIterator++;
+        } else {
+            result.push_back(*rightIterator);
+            rightIterator++;
         }
     }
-
-    // Push the remaining data from both vectors onto the resultant
-    while(left_it < left.size())
-    {
-        result.push_back(left[left_it]);
-        left_it++;
+    while (leftIterator < left.end()) {
+        result.push_back(*leftIterator);
+        leftIterator++;
     }
 
-    while(right_it < right.size())
-    {
-        result.push_back(right[right_it]);
-        right_it++;
+    while (rightIterator < right.end()) {
+        result.push_back(*rightIterator);
+        rightIterator++;
     }
 
     return result;
 }
 
-vector<int> Sort::mergesort(vector<int>& vec, int threads)
-{
-    // Termination condition: List is completely sorted if it
-    // only contains a single element.
-    if(vec.size() == 1)
-    {
+vector<int> Sort::mergeSort(vector<int> vec, int threads) {
+
+    if (vec.size() == 1) {
         return vec;
     }
-
-    // Determine the location of the middle element in the vector
     std::vector<int>::iterator middle = vec.begin() + (vec.size() / 2);
 
     vector<int> left(vec.begin(), middle);
     vector<int> right(middle, vec.end());
 
-    // Perform a merge sort on the two smaller vectors
-
-    if (threads > 1)
-    {
+    if (threads == 1) {
+        left = mergeSort(left, 1);
+        right = mergeSort(right, 1);
+    } else {
 #pragma omp parallel sections
         {
+            omp_set_nested(1);
 #pragma omp section
             {
-                left = mergesort(left, threads/2);
+//                cout << omp_get_thread_num() << endl;
+                left = mergeSort(left, threads / 2);
             }
 #pragma omp section
             {
-                right = mergesort(right, threads - threads/2);
+//                cout << omp_get_thread_num() << endl;
+
+                right = mergeSort(right, threads - threads / 2);
             }
         }
     }
-    else
-    {
-        left = mergesort(left, 1);
-        right = mergesort(right, 1);
-    }
+
 
     return merge(left, right);
 }
+
+

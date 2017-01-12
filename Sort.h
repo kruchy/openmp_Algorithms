@@ -14,9 +14,9 @@ class Sort {
 public:
     Sort();
 
-    std::vector<int> mergesort(std::vector<int> &vec, int threads);
+    std::vector<int> mergeSort(std::vector<int> vec, int threads);
+    std::vector<int> merge( std::vector<int> &left,  std::vector<int> &right);
 
-    std::vector<int> merge(const std::vector<int> &left, const std::vector<int> &right);
 };
 
 
